@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fake Ransomware Simulation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Fake ransomware screen */
+    .ransomware {
+      height: 100vh;
+      background: #111;
+      color: #ff0000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      animation: flicker 1s infinite alternate;
+    }
+
+    .ransomware h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+    }
+
+    .ransomware p {
+      font-size: 1.2em;
+      margin: 10px 0;
+    }
+
+    .countdown {
+      font-size: 2em;
+      margin-top: 20px;
+      color: #0f0;
+    }
+
+    @keyframes flicker {
+      from { opacity: 1; }
+      to { opacity: 0.85; }
+    }
+
+    /* Lesson section */
+    .lesson {
+      min-height: 100vh;
+      background: #111;
+      color: #fff;
+      padding: 50px;
+    }
+
+    .lesson h2 {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 30px;
+      text-shadow: 0 0 15px #00ffcc;
+    }
+
+    .tip {
+      margin: 20px 0;
+      font-size: 1.2em;
+      background: rgba(0,255,204,0.1);
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .tip i {
+      margin-right: 10px;
+      color: #00ffcc;
+    }
+
+    .warning {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 1.1em;
+      color: #ff0066;
+    }
+
+    /* Matrix background */
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Fake ransomware screen -->
+  <div class="ransomware">
+    <h1>!!YOUR FILES ARE ENCRYPTED!!</h1>
+    <p>All your important data has been locked.</p>
+    <p>↓To restore access, send 1 Bitcoin to the address below↓</p>
+    <p><strong>(scroll down to pay)</strong></p>
+    <div class="countdown" id="countdown">Data deletion in: 2d 3h, 5m, 60s.</div>
+  </div>
+
+  <!-- Lesson section -->
+  <div class="lesson">
+    <h2><i class="fas fa-shield-alt"></i> The Truth</h2>
+    <p>This was a <strong>ransomware simulation</strong>. You are safe — but imagine if this QR code had led to a real malicious site. Hackers often use ransomware to scare victims into paying money.</p>
+
+    <div class="tip"><i class="fas fa-lock"></i> Use strong, unique passwords for each account.</div>
+    <div class="tip"><i class="fas fa-shield-virus"></i> Enable two-factor authentication whenever possible.</div>
+    <div class="tip"><i class="fas fa-wifi"></i> Avoid using public Wi-Fi for sensitive transactions.</div>
+    <div class="tip"><i class="fas fa-user-secret"></i> Be cautious of phishing emails and suspicious links.</div>
+    <div class="tip"><i class="fas fa-laptop-code"></i> Keep your software and antivirus updated.</div>
+    <div class="tip"><i class="fas fa-eye-slash"></i> Cover your webcam when not in use.</div>
+    <div class="tip"><i class="fas fa-qrcode"></i> Don’t scan random QR codes — they can hide malicious links.</div>
+    <div class="tip"><i class="fas fa-exclamation-triangle"></i> Always verify the source before clicking on links.</div>
+    <div class="tip"><i class="fas fa-mobile-alt"></i> Install apps only from official stores.</div>
+    <div class="tip"><i class="fas fa-user-shield"></i> Regularly review your privacy settings on social media.</div>
+
+    <div class="warning">
+      ⚠️ Lesson: You scanned a QR code and saw a fake ransomware screen. This shows how easy it is to trick people. Always pause and think before clicking or scanning.
+    </div>
+    <br>
+    <p>Web made bye: Hamza Ahmed Elbarawy</p>
+  </div>
+
+  <!-- Matrix background -->
+  <canvas id="matrix"></canvas>
+
+<script>
+  // Matrix-style falling code (unchanged)
+  const canvas = document.getElementById('matrix');
+  const ctx = canvas.getContext('2d');
+
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+
+  const letters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
+  const fontSize = 14;
+  const columns = canvas.width / fontSize;
+
+  const drops = [];
+  for (let x = 0; x < columns; x++) {
+    drops[x] = 1;
+  }
+
+  function draw() {
+    ctx.fillStyle = 'rgba(0,0,0,0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#0f0';
+    ctx.font = fontSize + 'px monospace';
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+  }
+
+  setInterval(draw, 33);
+
+  // Fake ransomware countdown
+  // 2 days, 3 hours, 4 minutes, 60 seconds
+  let timeLeft = (2 * 24 * 60 * 60) + (3 * 60 * 60) + (4 * 60) + 60; // total seconds
+  const countdownEl = document.getElementById('countdown');
+
+  function formatTime(seconds) {
+    const days = Math.floor(seconds / (24 * 3600));
+    seconds %= (24 * 3600);
+    const hours = Math.floor(seconds / 3600);
+    seconds %= 3600;
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${days}d ${hours}h ${minutes}m ${secs}s`;
+  }
+
+  setInterval(() => {
+    if (timeLeft > 0) {
+      countdownEl.textContent = "Data deletion in: " + formatTime(timeLeft);
+      timeLeft--;
+    } else {
+      countdownEl.textContent = "Data deletion simulated!";
+    }
+  }, 1000);
+</script>
+
+</body>
+</html>
